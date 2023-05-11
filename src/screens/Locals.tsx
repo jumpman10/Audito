@@ -6,12 +6,20 @@ import { StackScreenProps } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useGetLocalsQuery } from '../services/api/api';
 import { LoadingScreen } from './LoadingScreen';
+import { incidetns } from '../incidents/incidents';
 
 interface Props extends StackScreenProps <any , any>{};
 
 export const Locals = ({navigation,route}  : Props) => {
     const {data:result,isSuccess:suceso, error:error2,isLoading} = useGetLocalsQuery()
+    const valuesIncidents = Object.values(incidetns);
+    const array=[]
+   for (let i = 0; i < result?.length; i++) {
+      const array2 = {...result[i], incidents:valuesIncidents[i]}
+      array.push(array2)
+    }
 
+    
   return (
       <View style={{flex:1}}>
         {isLoading? <LoadingScreen/> :
@@ -26,7 +34,7 @@ export const Locals = ({navigation,route}  : Props) => {
         </TouchableOpacity>
         <Text style={{textAlignVertical:'center',height:70,color:'black',textAlign:'center',}}>Seleccione Local</Text>
             <FlatList        
-            data={result}
+            data={array}
             keyExtractor={ (control) => control.id.toString() }
             showsVerticalScrollIndicator={ false }
             renderItem={ ({ item }) => ( 
@@ -35,7 +43,7 @@ export const Locals = ({navigation,route}  : Props) => {
             onPress={()=>navigation.replace('Control',{sessionId:route?.params?.sessionId,
                                                         local_name:item.name, location:item.location,item:item.item, 
                                                         localId:item.id,user_name:route?.params?.name,
-                                                        provincia:item.provincia,localidad:item.localidad})} >
+                                                        provincia:item.provincia,localidad:item.localidad,incidents:item.incidents})} >
             <Text style={styles.title}>{item.name}</Text>
             <Text style={styles.text}>Direccion = <Text style={styles.values}>{item.location}</Text></Text>
             <Text style={styles.text}>Localidad = <Text style={styles.values}>{item.localidad}</Text></Text>

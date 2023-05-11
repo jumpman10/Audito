@@ -4,6 +4,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useSelector } from 'react-redux';
 import { removeData } from '../services/asyncStoraje';
+import { LoadingScreen } from './LoadingScreen';
 
 interface Props extends StackScreenProps <any , any>{};
 
@@ -18,7 +19,7 @@ export const Home = ({navigation,route}  : Props) => {
        
         <Image source={require('./../assests/Audito-Logo-Large.png')} 
         resizeMode='contain' resizeMethod='resize' style={{width:'100%',marginTop:'10%'}}/>
-        {role === false ? 
+        {role === 'auditor' ? 
         <>
         <View style={styles.row}>
           <TouchableOpacity style={styles.buttons} onPress={()=>navigation.navigate('Locals',{sessionId:sessionId,name:userName})}>
@@ -43,7 +44,6 @@ export const Home = ({navigation,route}  : Props) => {
             try {
               await removeData('authData')
               navigation.replace('Login')
-              console.log('hola')
             } catch (error) {
               console.log('file: Menu.tsx ~ line 163 ~ error', error)
             }
@@ -59,7 +59,7 @@ export const Home = ({navigation,route}  : Props) => {
         </>
         
         :
-
+           role === 'admin'?
         <>
         <View style={styles.row}>
           <TouchableOpacity style={styles.buttons} onPress={()=>navigation.navigate('AllLists',{sessionId:route?.params?.sessionId})}>
@@ -96,7 +96,39 @@ export const Home = ({navigation,route}  : Props) => {
             <Text style={styles.text}>Cerrar Sesión</Text>
           </TouchableOpacity>
         </View>
-        </>}
+        </>
+        :
+        <>
+        <View style={styles.row}>
+          <TouchableOpacity style={styles.buttons} onPress={()=>navigation.navigate('ListsforLocal',{sessionId:sessionId,userName:userName})}>
+            <Icon 
+              name="document-text"
+              color="#FF914D"
+              size={ 35 }
+            />
+            <Text style={styles.text} >Auditorias</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.row}>
+          <TouchableOpacity style={styles.buttons} onPress={async () => {
+            try {
+              await removeData('authData')
+              navigation.replace('Login')
+            } catch (error) {
+              console.log('file: Menu.tsx ~ line 163 ~ error', error)
+            }
+          }}>
+            <Icon 
+              name="log-out"
+              color="#FF914D"
+              size={ 35 }
+            />
+            <Text style={styles.text}>Cerrar Sesión</Text>
+          </TouchableOpacity>
+        </View>
+        </>
+        }
+        
       </View>
   )
 }

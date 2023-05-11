@@ -26,17 +26,18 @@ const dispatch = useDispatch()
   const data = {email:mail,password:password}
 const [login,{isSuccess:suceso, error:error2,isError,data:resultado,isLoading}]= useLazyLoginQuery()
 if(suceso){
-  navigation.replace('Screens',{screen:'Home',params:{sessionId:resultado.sessionId,keeper:resultado.keeper,name:resultado.name}})
-  dispatch(handleLogin({role:resultado.keeper,sessionId:resultado.sessionId,userName:resultado.name}))
+  navigation.replace('Screens',{screen:'Home',params:{sessionId:resultado.sessionId,type:resultado.type,name:resultado.name}})
+  dispatch(handleLogin({role:resultado.type,sessionId:resultado.sessionId,userName:resultado.name}))
 }
 const log=()=>{
 login(data).then((result)=>{
   let sessionId = result.data.sessionId
-  let userName = result.data.userName
-  let role = result.data.keeper
+  let userName = result.data.name
+  let role = result.data.type
 setData('authData',{sessionId,userName,role})
 })
 }
+
 return (
  
                           <View style={styles.containerView} >     

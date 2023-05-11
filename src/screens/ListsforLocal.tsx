@@ -1,19 +1,19 @@
 import React, { useEffect } from 'react'
 import { View, Image, TouchableOpacity,Text, StyleSheet, FlatList } from 'react-native'
 import { StackScreenProps } from '@react-navigation/stack';
-import { useGetGastronomiaIdQuery } from '../services/api/api';
+import { useGetAllListsQuery } from '../services/api/api';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { LoadingScreen } from './LoadingScreen';
 
 interface Props extends StackScreenProps <any , any>{};
 
-export const Lists = ({navigation,route}  : Props) => {
-    const data = {sessionId:route?.params?.sessionId}
-    const {data:result,isSuccess:suceso, error:error2,isLoading} = useGetGastronomiaIdQuery(data)
-    
+export const ListsforLocal = ({navigation,route}  : Props) => {
+    const {data,isSuccess:suceso, error:error2,isLoading} = useGetAllListsQuery()
+    const result = data?.filter((e)=>e.local_name === route?.params?.userName)
+   console.log(result)
   return (
       <View style={{flex:1}}>
-        {isLoading? <LoadingScreen/>:
+        {isLoading? <LoadingScreen/> :
         <>
         {result?.length > 0 ? 
         <>
@@ -29,15 +29,16 @@ export const Lists = ({navigation,route}  : Props) => {
         <FlatList
         data={result}
         keyExtractor={ (control) => control.id.toString() }
-        showsVerticalScrollIndicator={ false }
+        showsVerticalScrollIndicator={ false } 
         renderItem={ ({ item }) => ( 
           <View style={styles.container}>
-            <TouchableOpacity style={styles.buttons} onPress={()=>navigation.navigate('Result', {listId:item.id,sessionId:route?.params?.sessionId,local_name:item.local_name})} >
+            <TouchableOpacity style={styles.buttons} onPress={()=>navigation.navigate('LocalResult', {listId:item.id,local_name:item.local_name,item:item})} >
               <Text style={styles.title}>{item.local_name}</Text>
               <Text style={styles.text}>{item.fecha}</Text>
               <Text style={styles.text}>Total = {item.total}</Text>
               <Text style={styles.text}>Media = {Number(item.media)?.toFixed(2)}</Text>
-              {item.change==="change1" ? 
+              <Text style={styles.text}>Auditor = {item.author_name}</Text>
+              {item.change=== "change2" ? 
               <View style={styles.noti}><Text style={styles.textNoti}>!</Text></View>
               : null}
             </TouchableOpacity>
@@ -59,7 +60,7 @@ export const Lists = ({navigation,route}  : Props) => {
         </>
         }
         </>
-      }
+}
       </View>
   )
 }

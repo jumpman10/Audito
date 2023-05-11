@@ -13,7 +13,7 @@ interface Props extends StackScreenProps <any , any>{};
 export const LocalsList = ({navigation,route}  : Props) => {
 
     const {data:result,isSuccess:suceso, error:error2,isLoading} = useGetLocalsQuery()
-  
+
 return (
     <View style={{flex:1}}>
       {isLoading?<LoadingScreen/>:

@@ -17,15 +17,15 @@ export const InfoLocal = ({fecha,resultado,hora,nameLocal,rubro,direccion,user_n
     return (
     <View style={styles.container}>
         <View style={styles.row}>
-            <Text style={styles.text}>Local: {nameLocal}</Text>
-            <Text style={styles.text}>Dirección: {direccion}</Text>
-            <Text style={styles.text}>Localidad: {localidad}</Text>
-            <Text style={styles.text}>Provincia: {provincia}</Text>
-            <Text style={styles.text}>Rubro: {rubro}</Text>
-            {fecha?<Text style={styles.text}>Fecha de Visita: {fecha}</Text>:null}
-            {hora?<Text style={styles.text}>Horario de Visita: {hora}</Text>:null}
-            {Number.isNaN(resultado) ===true || 'empty'?null:<Text style={styles.text}>Resultado Visita: {resultado}</Text>}
-            {user_name?<Text style={styles.text}>Auditor: {user_name}</Text>:null}
+            <Text style={styles.text}>Local: <Text style={styles.text2}>{nameLocal}</Text></Text>
+            <Text style={styles.text}>Dirección: <Text style={styles.text2}>{direccion}</Text></Text>
+            <Text style={styles.text}>Localidad: <Text style={styles.text2}>{localidad}</Text></Text>
+            <Text style={styles.text}>Provincia: <Text style={styles.text2}>{provincia}</Text></Text>
+            <Text style={styles.text}>Rubro: <Text style={styles.text2}>{rubro}</Text></Text>
+            {fecha?<Text style={styles.text}>Fecha de Visita: <Text style={styles.text2}>{fecha}</Text></Text>:null}
+            {hora?<Text style={styles.text}>Horario de Visita: <Text style={styles.text2}>{hora}</Text></Text>:null}
+            {Number.isNaN(resultado) ===true ?null:<Text style={styles.text}>Resultado Visita: <Text style={styles.text2}>{resultado}</Text></Text>}
+            {user_name?<Text style={styles.text}>Auditor: <Text style={styles.text2}>{user_name}</Text></Text>:null}
         </View>
     </View>
 )
@@ -34,7 +34,6 @@ export const InfoLocal = ({fecha,resultado,hora,nameLocal,rubro,direccion,user_n
 const styles = StyleSheet.create({
 container:{
     width:'95%',
-    height:250,
     justifyContent:'center',
     alignItems:'center',
     marginVertical:'2%', 
@@ -50,13 +49,20 @@ container:{
     elevation: 5,
 },
 text:{
-    color:'black'
+    color:'black',
+    fontSize:12,
+},
+text2:{
+    color:'#FF914D',
+    fontSize:19,
+    fontStyle:'italic',
 },
 row: {
     width:'100%',
     flex:1,
     justifyContent:'space-between',
     margin:6,
-    padding:6
+    paddingHorizontal:10,
+    paddingVertical:6
   },
 })

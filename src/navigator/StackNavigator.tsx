@@ -1,20 +1,7 @@
 import React, { useEffect,useState } from 'react'
 import { createStackNavigator } from '@react-navigation/stack';
-import { Home } from '../screens/Home';
 import Login from '../screens/Login';
-import { AuthContext } from '../context/AuthContext/authContext';
-import { LoadingScreen } from '../screens/LoadingScreen';
-import { Result } from '../screens/Results';
-import { Lists } from '../screens/Lists';
-import { Control } from '../screens/Control';
-import { Locals } from '../screens/Locals';
-import { LocalsList } from '../screens/LocalsList';
-import { LocalsDetail } from '../screens/LocalsDetail';
-import { AllLists } from '../screens/AllLists';
-import { AllResults } from '../screens/AllResults';
-import { useDispatch, useSelector } from 'react-redux';
 import { getData } from '../services/asyncStoraje';
-import { handleLogin } from '../redux/authentication';
 import { Screens } from './Screen';
 
 

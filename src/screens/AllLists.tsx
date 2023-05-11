@@ -35,8 +35,8 @@ export const AllLists = ({navigation,route}  : Props) => {
             <TouchableOpacity style={styles.buttons} onPress={()=>navigation.navigate('AllResults', {listId:item.id,local_name:item.local_name,item:item})} >
               <Text style={styles.title}>{item.local_name}</Text>
               <Text style={styles.text}>{item.fecha}</Text>
-              <Text style={styles.text}>Total = {item.resultado_suma}</Text>
-              <Text style={styles.text}>Media = {Number(item.resultado_media)?.toFixed(2)}</Text>
+              <Text style={styles.text}>Total = {item.total}</Text>
+              <Text style={styles.text}>Media = {Number(item.media)?.toFixed(2)}</Text>
               <Text style={styles.text}>Auditor = {item.author_name}</Text>
             </TouchableOpacity>
           </View>
