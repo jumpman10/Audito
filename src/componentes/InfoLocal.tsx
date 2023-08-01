@@ -47,6 +47,8 @@ container:{
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+    borderColor:'#DDDDDD',
+    borderWidth:0.5
 },
 text:{
     color:'black',

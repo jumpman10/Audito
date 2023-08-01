@@ -8,7 +8,7 @@ export const api = createApi({
         // 192.168.65.110
         // 192.168.100.10
         // 192.168.100.23
-        baseUrl:'http://192.168.65.108:3001',
+        baseUrl:'https://auditodb-production.up.railway.app',
     }),
     endpoints: (builder) => ({
         getLocals: builder.query({
@@ -34,7 +34,8 @@ export const api = createApi({
                         local_id:data.local_id,
                         local_name:data.local_name,
                         observaciones:data.observaciones,
-                        incidents:data.incidents
+                        incidents:data.incidents,
+                        image:data.image
                     })
                 }),
                 invalidatesTags : ['getGastronimia']
@@ -71,6 +72,12 @@ export const api = createApi({
             }),
             providesTags : ['getGastronimia','putAudit']
         }),  
+        getIncidents : builder.query({
+            query:(data)=>({
+                method: 'GET',
+                url:`/incidents/${data.name}`
+            }),
+        }),
         login: builder.query({
             query:(data)=>({
                 method: 'POST',
@@ -78,6 +85,31 @@ export const api = createApi({
                 body:({
                     email:data.email,
                     password:data.password
+                })
+            })
+        }),
+        postLocal: builder.mutation({
+            query:(data)=>({
+                method: 'POST',
+                url:'/locals',
+                body:({
+                    name:data.name,
+                    location:data.location,
+                    provincia:data.provincia,
+                    localidad:data.localidad,
+                    item:data.item
+                })
+            })
+        }),
+        postAccount: builder.mutation({
+            query:(data)=>({
+                method: 'POST',
+                url:'/users',
+                body:({
+                    name:data.name,
+                    email:data.email,
+                    password:data.password,
+                    type:data.type,
                 })
             })
         }),
@@ -89,7 +121,8 @@ export const api = createApi({
                     listId:data.listId,
                     comment:data.comment,
                     toChange:data.toChange,
-                    change:'change1'
+                    change:data.change,
+                    image:data.image
                 })
             }),
             invalidatesTags : ['putAudit']
@@ -100,18 +133,19 @@ export const api = createApi({
                 url:`/lists/${data.sessionId}/${data.local_name}/${data.listId}`,
                 body:({
                     incidents:data.incidents,
-                    observaciones:data.obsevaciones,
-                    change:'change2',
+                    change:data.change,
                     total:data.total,
                     media:data.media,
                 })
             }),
             invalidatesTags : ['putAudit']
-        })         
+        }),      
         })
 
 }) 
 
 export const {useGetLocalsQuery,usePostGastronomiaMutation,useLazyLoginQuery,
             useGetGastronomiaQuery,useGetGastronomiaIdQuery,useGetLocalsbyIdQuery,
-            useGetListsByLocalQuery,useGetAllListsQuery,useGetListbyIdQuery,useSendCommentMutation,usePutIncidentsMutation} = api
+            useGetListsByLocalQuery,useGetAllListsQuery,useGetListbyIdQuery,
+            useSendCommentMutation,usePutIncidentsMutation,useGetIncidentsQuery,
+            usePostLocalMutation,usePostAccountMutation} = api

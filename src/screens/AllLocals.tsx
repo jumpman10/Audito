@@ -10,10 +10,10 @@ import { LoadingScreen } from './LoadingScreen';
 interface Props extends StackScreenProps <any , any>{};
 
 
-export const LocalsList = ({navigation,route}  : Props) => {
+export const AllLocals = ({navigation,route}  : Props) => {
 
     const {data:result,isSuccess:suceso, error:error2,isLoading} = useGetLocalsQuery()
-
+    const data = result?.filter((e)=>e.item === route?.params?.cat)
 return (
     <View style={{flex:1}}>
       {isLoading?<LoadingScreen/>:
@@ -28,13 +28,13 @@ return (
        </TouchableOpacity>
        <Text style={{textAlignVertical:'center',height:70,color:'black',textAlign:'center',}}>Seleccione Local</Text>
            <FlatList        
-           data={result}
+           data={data}
            keyExtractor={ (control) => control.id.toString() }
            showsVerticalScrollIndicator={ false }
            renderItem={ ({ item }) => ( 
-           <View style={styles.container}>
+            <View style={styles.container}>
             <TouchableOpacity style={styles.buttons} 
-            onPress={()=>navigation.navigate('LocalsDetail',{local_name:item.name, item:item})} >
+            onPress={()=>navigation.navigate('AllLists',{name:item.name})} >
            <Text style={styles.title}>{item.name}</Text>
            <Text style={styles.values}>{item.location}</Text>
            <Text style={styles.values}>{item.localidad}</Text>

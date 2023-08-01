@@ -1,7 +1,5 @@
 import React from 'react'
 import { FlatList,StyleSheet, Text,  TouchableOpacity, View } from 'react-native'
-import { Points } from '../componentes/Points'
-import { usePostGastronomiaMutation } from '../services/api/api'
 import { StackScreenProps } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useGetLocalsQuery } from '../services/api/api';
@@ -11,15 +9,7 @@ import { incidetns } from '../incidents/incidents';
 interface Props extends StackScreenProps <any , any>{};
 
 export const Locals = ({navigation,route}  : Props) => {
-    const {data:result,isSuccess:suceso, error:error2,isLoading} = useGetLocalsQuery()
-    const valuesIncidents = Object.values(incidetns);
-    const array=[]
-   for (let i = 0; i < result?.length; i++) {
-      const array2 = {...result[i], incidents:valuesIncidents[i]}
-      array.push(array2)
-    }
-
-    
+    const {data:result,isSuccess:suceso, error:error2,isLoading} = useGetLocalsQuery() 
   return (
       <View style={{flex:1}}>
         {isLoading? <LoadingScreen/> :
@@ -34,21 +24,21 @@ export const Locals = ({navigation,route}  : Props) => {
         </TouchableOpacity>
         <Text style={{textAlignVertical:'center',height:70,color:'black',textAlign:'center',}}>Seleccione Local</Text>
             <FlatList        
-            data={array}
+            data={result}
             keyExtractor={ (control) => control.id.toString() }
             showsVerticalScrollIndicator={ false }
             renderItem={ ({ item }) => ( 
             <View style={styles.container}>
             <TouchableOpacity style={styles.buttons} 
-            onPress={()=>navigation.replace('Control',{sessionId:route?.params?.sessionId,
+            onPress={()=>navigation.navigate('Control',{sessionId:route?.params?.sessionId,
                                                         local_name:item.name, location:item.location,item:item.item, 
                                                         localId:item.id,user_name:route?.params?.name,
-                                                        provincia:item.provincia,localidad:item.localidad,incidents:item.incidents})} >
+                                                        provincia:item.provincia,localidad:item.localidad})} >
             <Text style={styles.title}>{item.name}</Text>
-            <Text style={styles.text}>Direccion = <Text style={styles.values}>{item.location}</Text></Text>
-            <Text style={styles.text}>Localidad = <Text style={styles.values}>{item.localidad}</Text></Text>
-            <Text style={styles.text}>Provincia = <Text style={styles.values}>{item.provincia}</Text></Text>
-            <Text style={styles.text}>Rubro = <Text style={styles.values}>{item.item}</Text></Text>
+            <Text style={styles.values}>{item.location}</Text>
+            <Text style={styles.values}>{item.localidad}</Text>
+            <Text style={styles.values}>{item.provincia}</Text>
+            <Text style={styles.values}>{item.item}</Text>
             </TouchableOpacity>
             </View>)}
             />
@@ -75,15 +65,18 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 5,
-        padding:10
+        borderColor:'#DDDDDD',
+        borderWidth:1,
     },
     text:{
-      color:'black',fontSize:15,textAlign:'left'
+      color:'black',fontSize:10
     },
     title:{
-        color:'black',fontSize:25,fontStyle:'italic',textAlign:'center'
+        color:'white',fontSize:25,fontStyle:'italic',
+        textAlign:'center',textDecorationLine:'underline',backgroundColor:'#FF914D',
+        borderTopLeftRadius:15,borderTopRightRadius:15,height:45,textAlignVertical:'center'
     },
     values:{
-      color:'#FF914D', fontSize:15,fontStyle:'italic',
+      color:'black', fontSize:15,fontStyle:'italic',textAlign:'left',paddingHorizontal:10,paddingVertical:4
     }
   })

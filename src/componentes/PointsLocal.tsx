@@ -9,8 +9,9 @@ import Icon from 'react-native-vector-icons/Ionicons';
 interface Props {
   title: string,
   num: number,
+  val:number
 }
-export const PointsLocal = ({title,num}:Props) => {
+export const PointsLocal = ({title,num,val}:Props) => {
 
   return (
     <View style={styles.container}>
@@ -18,10 +19,12 @@ export const PointsLocal = ({title,num}:Props) => {
         <StarRating
             rating={num}
             onChange={(num)=>{num}}
-            maxStars={4}
-            enableHalfStar={false}
-            animationConfig={{scale:0}}
+            maxStars={val}
+            animationConfig={{scale:1.1,duration:300,delay:300}}
             style={{margin:3}}
+            starStyle={{marginHorizontal:1 }}
+            enableSwiping= {false}
+            starSize={34}
             />
     </View>
   )
@@ -29,7 +32,7 @@ export const PointsLocal = ({title,num}:Props) => {
 
 const styles = StyleSheet.create({
   container:{
-    width:'95%',
+    width:'85%',
     justifyContent:'center',
     alignItems:'center',
     marginVertical:'2%', 
@@ -43,6 +46,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-    padding:5
+    padding:5,
+    borderColor:'#DDDDDD',
+    borderWidth:0.5
   }
 })

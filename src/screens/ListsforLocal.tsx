@@ -10,7 +10,6 @@ interface Props extends StackScreenProps <any , any>{};
 export const ListsforLocal = ({navigation,route}  : Props) => {
     const {data,isSuccess:suceso, error:error2,isLoading} = useGetAllListsQuery()
     const result = data?.filter((e)=>e.local_name === route?.params?.userName)
-   console.log(result)
   return (
       <View style={{flex:1}}>
         {isLoading? <LoadingScreen/> :
@@ -32,14 +31,38 @@ export const ListsforLocal = ({navigation,route}  : Props) => {
         showsVerticalScrollIndicator={ false } 
         renderItem={ ({ item }) => ( 
           <View style={styles.container}>
-            <TouchableOpacity style={styles.buttons} onPress={()=>navigation.navigate('LocalResult', {listId:item.id,local_name:item.local_name,item:item})} >
+            <TouchableOpacity style={{
+              width:'90%',  
+              marginVertical:'2%', 
+              borderRadius:15,
+              backgroundColor: item.change==="inprocess"?'grey':'white',
+              shadowColor: "#000",
+              shadowOffset: {
+                  width: 0,
+                  height: 2,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.84,
+              elevation: 5,
+              padding:10}} 
+  onPress={item.change==="inprocess" ? null : ()=> {navigation.navigate('LocalResult', {listId:item.id,local_name:item.local_name,author_id:item.author_id})}} >
               <Text style={styles.title}>{item.local_name}</Text>
               <Text style={styles.text}>{item.fecha}</Text>
+              <Text style={styles.text}>{item.horario}</Text>
               <Text style={styles.text}>Total = {item.total}</Text>
               <Text style={styles.text}>Media = {Number(item.media)?.toFixed(2)}</Text>
               <Text style={styles.text}>Auditor = {item.author_name}</Text>
-              {item.change=== "change2" ? 
+              {item.change=== "done" ? 
               <View style={styles.noti}><Text style={styles.textNoti}>!</Text></View>
+              : null}
+              {item.change=== "inprocess" ? 
+              <View style={styles.notiwait}>
+                <Icon 
+                name="timer"
+                color="black"
+                size={ 30 }
+                />
+            </View>
               : null}
             </TouchableOpacity>
           </View>
@@ -108,6 +131,25 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+  },
+  notiwait:{
+    backgroundColor:'gold',
+    width:40,
+    height:40,
+    borderRadius:20,
+    position:'absolute',
+    right:'5%',
+    top:'-5%',
+    justifyContent:'center',
+    shadowColor: "#000",
+    shadowOffset: {
+        width: 0,
+        height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    alignItems:'center'
   },
   textNoti:{
     textAlign:'center',

@@ -11,9 +11,10 @@ interface Props {
   sendIncidents:any,
   remove:any,
   close:any,
-  name:string
+  name:string,
+  val:number
 }
-export const PointsResult = ({title,num,modalVisible,close,remove,sendIncidents,name}:Props) => {
+export const PointsResult = ({title,num,modalVisible,close,remove,sendIncidents,name,val}:Props) => {
 
   return (
     <View style={styles.container}>
@@ -21,60 +22,26 @@ export const PointsResult = ({title,num,modalVisible,close,remove,sendIncidents,
         <StarRating
             rating={num}
             onChange={(num)=>{num}}
-            maxStars={4}
+            maxStars={val}
             enableHalfStar={false}
-            animationConfig={{scale:0}}
+            animationConfig={{scale:1.1,duration:300,delay:300}}
             style={{margin:3}}
-            />   
-                      <Modal
-                        animationType="fade"
-                        transparent={true}
-                        visible={modalVisible}>
-                        <View style={styles.centeredView}>
-                          <View style={styles.modalView}>
-                            <Text style={styles.modalText}>{name}</Text>
-                            <TouchableOpacity
-                              style={[styles.button2, styles.buttonOpen]}
-                              onPress={() =>sendIncidents(title)}>
-                              <Text style={styles.textStyle}>Agregar</Text>
-                            </TouchableOpacity>
-                            <Text style={{color:'black',textAlign:'left',width:'100%',fontSize:10,fontStyle:'italic'}}>*Agregar incidencia en la lista</Text>
-                            <TouchableOpacity
-                              style={[styles.button2, styles.buttonClose]}
-                              onPress={() =>remove(title)}>
-                              <Text style={styles.textStyle}>Quitar</Text>
-                            </TouchableOpacity>
-                            <Text style={{color:'black',textAlign:'left',width:'100%',fontSize:10,fontStyle:'italic'}}>*Quitar incidencia de la lista</Text>
-                            <TouchableOpacity
-                              style={styles.button}
-                              onPress={() =>close()}>
-                              <Text style={styles.textStyle}>Listo</Text>
-                            </TouchableOpacity>
-                          </View>
-                        </View>
-                      </Modal>    
+            starStyle={{marginHorizontal:1 }}
+            enableSwiping= {false}
+            starSize={34}
+            />    
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   container:{
-    width:'95%',
+    width:'100%',
     justifyContent:'center',
     alignItems:'center',
     marginVertical:'2%', 
-    borderRadius:15,
-    backgroundColor:'white',
-    shadowColor: "#000",
-    shadowOffset: {
-        width: 0,
-        height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-    padding:5
-  }, modalView: {
+  }, 
+  modalView: {
     margin: 20,
     backgroundColor: 'white',
     borderRadius: 20,
@@ -88,6 +55,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
+    borderColor:'#DDDDDD',
+    borderWidth:0.5
   },
   button2: {
     width: 200,

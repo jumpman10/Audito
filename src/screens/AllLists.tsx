@@ -9,8 +9,7 @@ interface Props extends StackScreenProps <any , any>{};
 
 export const AllLists = ({navigation,route}  : Props) => {
     const {data:result,isSuccess:suceso, error:error2,isLoading} = useGetAllListsQuery()
-
-    
+    const data = result?.filter((e)=>e.local_name=== route?.params?.name)
   return (
       <View style={{flex:1}}>
         {isLoading? <LoadingScreen/> :
@@ -27,14 +26,17 @@ export const AllLists = ({navigation,route}  : Props) => {
         </TouchableOpacity>
         <Text style={{textAlignVertical:'center',height:70,color:'black',textAlign:'center',}}>Auditorias</Text>
         <FlatList
-        data={result}
+        data={data}
         keyExtractor={ (control) => control.id.toString() }
         showsVerticalScrollIndicator={ false } 
         renderItem={ ({ item }) => ( 
           <View style={styles.container}>
-            <TouchableOpacity style={styles.buttons} onPress={()=>navigation.navigate('AllResults', {listId:item.id,local_name:item.local_name,item:item})} >
+            <TouchableOpacity style={styles.buttons} 
+            onPress={()=>navigation.navigate('AllResults',
+             {listId:item.id,local_name:item.local_name,author_id:item.author_id})} >
               <Text style={styles.title}>{item.local_name}</Text>
               <Text style={styles.text}>{item.fecha}</Text>
+              <Text style={styles.text}>{item.horario}</Text>
               <Text style={styles.text}>Total = {item.total}</Text>
               <Text style={styles.text}>Media = {Number(item.media)?.toFixed(2)}</Text>
               <Text style={styles.text}>Auditor = {item.author_name}</Text>

@@ -34,10 +34,15 @@ export const Lists = ({navigation,route}  : Props) => {
           <View style={styles.container}>
             <TouchableOpacity style={styles.buttons} onPress={()=>navigation.navigate('Result', {listId:item.id,sessionId:route?.params?.sessionId,local_name:item.local_name})} >
               <Text style={styles.title}>{item.local_name}</Text>
-              <Text style={styles.text}>{item.fecha}</Text>
-              <Text style={styles.text}>Total = {item.total}</Text>
-              <Text style={styles.text}>Media = {Number(item.media)?.toFixed(2)}</Text>
-              {item.change==="change1" ? 
+              <View style={{flexDirection:'row', justifyContent:'space-between'}}>
+                <Text style={styles.text}>{item.fecha}</Text>
+                <Text style={styles.text}>{item.horario}</Text>
+              </View>
+              <View style={{flexDirection:'row', justifyContent:'space-between'}}>
+                <Text style={styles.text}>Total = {item.total}</Text>
+                <Text style={styles.text}>Media = {Number(item.media)?.toFixed(2)}</Text>
+              </View>
+              {item.change==="inprocess" ? 
               <View style={styles.noti}><Text style={styles.textNoti}>!</Text></View>
               : null}
             </TouchableOpacity>
@@ -70,34 +75,37 @@ const styles = StyleSheet.create({
     alignItems:'center',   
   },
   buttons:{   
-      width:'90%',  
-      marginVertical:'2%', 
-      borderRadius:15,
-      backgroundColor:'white',
-      shadowColor: "#000",
-      shadowOffset: {
-          width: 0,
-          height: 2,
-      },
-      shadowOpacity: 0.25,
-      shadowRadius: 3.84,
-      elevation: 5,
-      padding:10
+    width:'90%',  
+    marginVertical:'4%', 
+    borderRadius:15,
+    backgroundColor:'white',
+    shadowColor: "#000",
+    shadowOffset: {
+        width: 0,
+        height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    borderColor:'#DDDDDD',
+    borderWidth:1,
   },
   text:{
-    color:'black',fontSize:17,marginVertical:1
+    color:'black',fontSize:18,marginVertical:1,paddingHorizontal:15,paddingVertical:5
   },
   title:{
-      color:'#FF914D',fontSize:20,fontStyle:'italic',textAlign:'center',marginVertical:2
+    color:'white',fontSize:25,fontStyle:'italic',
+    textAlign:'center',textDecorationLine:'underline',backgroundColor:'#FF914D',
+    borderTopLeftRadius:15,borderTopRightRadius:15,height:45,textAlignVertical:'center'
   },
   noti:{
     backgroundColor:'red',
-    width:40,
-    height:40,
-    borderRadius:20,
+    width:60,
+    height:60,
+    borderRadius:30,
     position:'absolute',
-    right:'5%',
-    top:'-5%',
+    right:'2%',
+    top:'-11%',
     justifyContent:'center',
     shadowColor: "#000",
     shadowOffset: {
