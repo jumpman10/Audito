@@ -1,25 +1,25 @@
 import React from 'react'
-import { StyleSheet, Text, TextInput, View } from 'react-native'
+import { TouchableOpacity } from 'react-native';
+import { Text, TextInput, View,StyleSheet } from 'react-native'
 import StarRating from 'react-native-star-rating-widget'
+import Icon from 'react-native-vector-icons/Ionicons';
 
 
 
 interface Props {
   title: string,
-  seteo: any,
   num: number,
   val:number
 }
-export const Points = ({title,seteo,num,val}:Props) => {
+export const PointsLocal = ({title,num,val}:Props) => {
 
   return (
     <View style={styles.container}>
         <Text style={{color:'black',margin:5,fontSize:15,fontStyle:'italic'}}>{title}</Text>
         <StarRating
             rating={num}
-            onChange={ (e) => seteo(e)}
+            onChange={(num)=>{num}}
             maxStars={val}
-            enableHalfStar={false}
             animationConfig={{scale:1.1,duration:300,delay:300}}
             style={{margin:3}}
             starStyle={{marginHorizontal:1 }}

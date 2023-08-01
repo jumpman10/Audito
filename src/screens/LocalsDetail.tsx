@@ -14,14 +14,16 @@ export const LocalsDetail = ({navigation,route}  : Props) => {
   ,{mes:'Mayo',num:'05'},{mes:'Junio',num:'06'},{mes:'Julio',num:'07'},{mes:'Agosto',num:'08'},
   {mes:'Septiembre',num:'09'},{mes:'Octubre',num:'10'},{mes:'Noviembre',num:'11'},{mes:'Diciembre',num:'12'}]
   const result = data?.filter((e)=>e.local_name === route?.params?.local_name)
+
+
+
   return (
     <View style={{flex:1}}>
 {isLoading?<LoadingScreen/> :
       <>
       {result?.length > 0 ? 
-      <ScrollView>
-        <View style={{width:'100%', alignItems:'center',marginBottom:10}} >
-        <TouchableOpacity onPress={()=>navigation.goBack()} 
+      <>
+              <TouchableOpacity onPress={()=>navigation.goBack()} 
         style={{justifyContent:'center',height:70,alignItems:'center',position:'absolute',left:15,zIndex:1000}}>
           <Icon 
             name="arrow-back"
@@ -29,18 +31,21 @@ export const LocalsDetail = ({navigation,route}  : Props) => {
             size={ 35 }
           />
         </TouchableOpacity>
-        <Text style={{textAlignVertical:'center',height:70,color:'black',textAlign:'center',}}>Controles</Text>
-        <InfoLocal fecha={route?.params?.item?.fecha} resultado={'empty'} 
-            hora={route?.params?.item?.horario} nameLocal={route?.params?.local_name} 
-            direccion={route?.params?.item?.location} rubro={route?.params?.item?.item}
-            user_name={route?.params?.item?.author_name} localidad={route?.params?.item?.localidad} 
-            provincia={route?.params?.item?.provincia}/>
-        
+        <View style={{width:'100%', alignItems:'center',marginBottom:10,marginTop:55}} >
         <FlatList
         data={meses}
         keyExtractor={ (control) => control.num.toString() }
         showsVerticalScrollIndicator={ false }
         style={{width:'100%'}}
+        ListHeaderComponent={()=>(
+          <View style={{ alignItems:'center'}}>
+          <InfoLocal fecha={route?.params?.item?.fecha} resultado={NaN} 
+          hora={route?.params?.item?.horario} nameLocal={route?.params?.local_name} 
+          direccion={route?.params?.item?.location} rubro={route?.params?.item?.item}
+          user_name={route?.params?.item?.author_name} localidad={route?.params?.item?.localidad} 
+          provincia={route?.params?.item?.provincia}/>
+          </View>
+        )}
         renderItem={ ({ item }) => ( 
           <>
           <Months month={item.mes} media={result} mes={item.num}/>
@@ -48,7 +53,7 @@ export const LocalsDetail = ({navigation,route}  : Props) => {
         ) }
         />
         </View>
-        </ScrollView>
+        </>
         :        
         <>
         <TouchableOpacity onPress={()=>navigation.goBack()} 

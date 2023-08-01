@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import {
     LayoutAnimation,
@@ -23,51 +24,50 @@ interface Props {
 
 
 
-export const Months = ({month,media,mes}:Props) => {
+export const TypeAccounts = () => {
     const [active, setActive] = useState(null);
-    const data = media?.filter((e)=>e.fecha?.slice(3,5)===mes)
-    const data2 = data?.map((e)=>Number(e.media))
-    const suma = data2?.reduce((anterior, actual) => anterior + actual, 0)
-    const resultadoFinal = suma/data2?.length 
+
     
     return (
         <View style={styles.container}>
-                <Item  mes={month} 
-                active={active} i={1} setActive={setActive} month={month} media={resultadoFinal} />
+                <Item active={active} i={1} setActive={setActive} />
         </View>
     );
 }
-function Item({ i, active,setActive,mes,month,media }) {
+function Item({ i, active,setActive }) {
     const onDropDown = () => {
         LayoutAnimation.easeInEaseOut();
         setActive(i == active ? null : i);
     };
     const open = active == i;
-
+    const navigation = useNavigation()
     return (
-        <TouchableOpacity style={{
-        width:'95%',  
-        marginVertical:'2%', 
+        <TouchableOpacity 
+        style={{
+        width:'100%',  
         borderRadius:15,
-        backgroundColor:Number.isNaN(media) ===true?'grey':'white',
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5,
-        padding:10}} onPress={onDropDown} activeOpacity={1}>
+        }}
+        onPress={onDropDown} activeOpacity={1}>
             <View style={styles.row}>
-                <Text style={styles.text}>{mes}</Text>
+                <Text style={styles.item}>Selecciona el tipo de cuenta</Text>
             </View>
             {open &&
             <>
-                <View style={styles.checkBox}>
-                        <Text  style={{padding: 5,color:media<2.5?'red':'green',textAlignVertical:'center',fontSize:20}}>
-                            {Number.isNaN(media) ===true?null:media.toFixed(2)}
+                <View style={styles.checkBox}> 
+                    <TouchableOpacity onPress={()=>navigation.navigate('AddLocalAccount',{type:'admin',name:''})}
+                     style={styles.touchable}>
+                        <Text  style={{padding: 5,color:'green',textAlignVertical:'center',
+                        fontSize:17,textDecorationLine:'underline',textDecorationStyle:'solid',}}>
+                            Administrador
                         </Text>
+                    </TouchableOpacity> 
+                    <TouchableOpacity onPress={()=>navigation.navigate('AddLocalAccount',{type:'auditor',name:''})}
+                     style={styles.touchable}>
+                        <Text  style={{padding: 5,color:'green',textAlignVertical:'center',
+                        fontSize:17,textDecorationLine:'underline',textDecorationStyle:'solid'}}>
+                            Auditor
+                        </Text>
+                    </TouchableOpacity> 
                 </View>
             </>      
                }
@@ -82,22 +82,15 @@ const styles = StyleSheet.create({
     container: {
         alignItems:'center',
         justifyContent:'center',
-        paddingTop: 5,
     },
     item: {
-        width:'95%',  
-        marginVertical:'2%', 
-        borderRadius:15,
-        backgroundColor:'white',
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5,
-        padding:10
+    color:'black',
+    fontSize:14,
+    padding:10,
+    height:60,
+    textAlignVertical:'center',
+    textDecorationLine:'underline',
+    textDecorationStyle:'solid',
     },
     subItem: {
         padding: 5,
@@ -105,13 +98,10 @@ const styles = StyleSheet.create({
         textAlignVertical:'center'
     },
     row: {
-        height:30,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+
     },
     checkBox:{
-        height:40,
-        flexDirection: 'row',
+        flexDirection: 'column',
         justifyContent: 'space-between',
     },
     box: {
@@ -133,4 +123,7 @@ const styles = StyleSheet.create({
         color:'black',
         textAlignVertical:'center'
     },
+    touchable:{
+        marginHorizontal:1
+    }
 })

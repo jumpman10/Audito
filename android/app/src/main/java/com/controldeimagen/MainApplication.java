@@ -12,6 +12,8 @@ import com.facebook.soloader.SoLoader;
 import com.controldeimagen.newarchitecture.MainApplicationReactNativeHost;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import com.rnfs.RNFSPackage; 
+
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -88,4 +90,5 @@ public class MainApplication extends Application implements ReactApplication {
       }
     }
   }
+
 }

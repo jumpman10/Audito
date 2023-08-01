@@ -16,6 +16,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getData } from '../services/asyncStoraje';
 import { handleLogin } from '../redux/authentication';
 import { Auditoria } from '../screens/Auditoria';
+import { ListsforLocal } from '../screens/ListsforLocal';
+import { LocalResult } from '../screens/LocalResult';
+import { AllCategories } from '../screens/AllCategories';
+import { AllLocals } from '../screens/AllLocals';
+import { AddLocal } from '../screens/AddLocal';
+import { AddLocalAccount } from '../screens/AddLocalAccount';
+import { AddIncidents } from '../screens/AddIncidents';
+import { AddMenu } from '../screens/AddMenu';
 
 
 
@@ -32,6 +40,14 @@ export type RootStackParams = {
  AllLists:undefined,
  AllResults:undefined,
  Auditoria:undefined,
+ ListsforLocal:undefined,
+ LocalResult:undefined,
+ AllCategories:undefined,
+ AllLocals:undefined,
+ AddLocal:undefined,
+ AddLocalAccount:undefined,
+ AddIncidents:undefined,
+ AddMenu:undefined
 }
 const Stack = createStackNavigator<RootStackParams>();
 
@@ -69,12 +85,28 @@ export const Screens= () => {
           options={{  headerShown:false }}/>
           <Stack.Screen name="AllResults" component={AllResults} 
           options={{  headerShown:false }}/>
+          <Stack.Screen name="AllCategories" component={AllCategories} 
+          options={{  headerShown:false }}/>
+          <Stack.Screen name="AllLocals" component={AllLocals} 
+          options={{  headerShown:false }}/>
+          <Stack.Screen name="AddMenu" component={AddMenu} 
+          options={{  headerShown:false }}/>
+          <Stack.Screen name="AddLocal" component={AddLocal} 
+          options={{  headerShown:false }}/>
+          <Stack.Screen name="AddIncidents" component={AddIncidents} 
+          options={{  headerShown:false }}/>
+          <Stack.Screen name="AddLocalAccount" component={AddLocalAccount} 
+          options={{  headerShown:false }}/>
+          <Stack.Screen name="ListsforLocal" component={ListsforLocal} 
+          options={{  headerShown:false }}/>
           <Stack.Screen name="Lists" component={Lists} 
           options={{  headerShown:false }}/>
           <Stack.Screen name="Control" component={Control} 
           options={{  headerShown:false }}/>
           <Stack.Screen name="Result" component={Result} 
           options={{  headerShown:false }}/>  
+          <Stack.Screen name="LocalResult" component={LocalResult} 
+          options={{  headerShown:false }}/> 
           <Stack.Screen name="Auditoria" component={Auditoria} 
           options={{  headerShown:false }}/>  
           <Stack.Screen name="Login" component={Login} 

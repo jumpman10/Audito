@@ -1,15 +1,14 @@
 import { StackScreenProps } from '@react-navigation/stack';
-import React, { useContext, useEffect, useState } from 'react'
-import { Animated, Image, ImageBackground, TextInput, View,KeyboardAvoidingView, 
-  Platform, TouchableWithoutFeedback, Keyboard, TouchableOpacity, Alert,StyleSheet, Text } from 'react-native'
+import React, { useState } from 'react'
+import { Image,TextInput, View,TouchableOpacity, Alert,StyleSheet, Text, ToastAndroid } from 'react-native'
 import { useForm } from '../hooks/useForm';
-import { AuthContext } from '../context/AuthContext/authContext';
-import axios from 'axios';
 import { useLazyLoginQuery} from '../services/api/api';
-import { getData, setData } from '../services/asyncStoraje';
-import { useDispatch, useSelector } from 'react-redux';
+import { setData } from '../services/asyncStoraje';
+import { useDispatch } from 'react-redux';
 import { handleLogin } from '../redux/authentication';
 import { LoadingScreen } from './LoadingScreen';
+import LinearGradient from 'react-native-linear-gradient';
+import { Buttons } from '../componentes/Buttons';
 
 
 
@@ -18,35 +17,59 @@ interface Props extends StackScreenProps <any , any>{};
 const Login = ({navigation}  : Props) => {
 
 const dispatch = useDispatch()
-  
-  const { mail, onChange, password } = useForm({
+const [error ,setError] = useState(false)
+const { mail, onChange, password } = useForm({
     password: '',
     mail: '',
   });
   const data = {email:mail,password:password}
 const [login,{isSuccess:suceso, error:error2,isError,data:resultado,isLoading}]= useLazyLoginQuery()
-if(suceso){
-  navigation.replace('Screens',{screen:'Home',params:{sessionId:resultado.sessionId,keeper:resultado.keeper,name:resultado.name}})
-  dispatch(handleLogin({role:resultado.keeper,sessionId:resultado.sessionId,userName:resultado.name}))
+if(suceso && !isLoading){
+  dispatch(handleLogin({role:resultado.type,sessionId:resultado.sessionId,userName:resultado.name}))
+  navigation.replace('Screens',{screen:'Home',params:{sessionId:resultado.sessionId,type:resultado.type,name:resultado.name}})
 }
 const log=()=>{
-login(data).then((result)=>{
-  let sessionId = result.data.sessionId
-  let userName = result.data.userName
-  let role = result.data.keeper
-setData('authData',{sessionId,userName,role})
-})
+  if(mail.length && password.length){
+    login(data).then((result)=>{
+      let sessionId = result.data.sessionId
+      let userName = result.data.name
+      let role = result.data.type
+      setData('authData',{sessionId,userName,role})
+    })
+    .catch((error) => {
+      setError(true)
+      ToastAndroid.showWithGravity(
+        'Uno o dos de los datos es incorrecto. Por favor verifícalos e ingresa de nuevo',
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER,
+      );
+    })
+  }else{
+    setError(true)
+    ToastAndroid.showWithGravity(
+      '¡Error! Debe llenar los campos',
+      ToastAndroid.SHORT,
+      ToastAndroid.CENTER,
+    );
+  }
 }
+
 return (
+  <LinearGradient colors={['#FF914D','white']}
+      start={{x: 0.0, y: 1}} 
+      end={{x: 0.0, y: 0.75}} 
+      style={{flex:1}}
+      >
  
                           <View style={styles.containerView} >     
                               {isLoading ? <LoadingScreen/> :
                               <>
-                            <Image source={require('./../assests/Audito-Logo-Large.png')} 
+                            <Image source={require('./../assests/Logo-Audito.png')} 
                                    resizeMode='contain' resizeMethod='resize' style={styles.logo}/>
                                 <View style={styles.inputsPosition}>
                                     <TextInput
-                                      style={styles.input}
+                                      style={{width:300,height: 40,margin: 15,borderBottomWidth: 1,paddingHorizontal: 10,
+                                        paddingVertical:10,borderColor: !error ? 'black':'red',color:'black'}}
                                       placeholder="email"
                                       onChangeText={ (value) => onChange( value, 'mail' ) }
                                       value={mail}
@@ -54,8 +77,9 @@ return (
                                     >
                                     </TextInput>
                                     <TextInput
-                                      style={styles.input}
-                                      placeholder="password"
+                                      style={{width:300,height: 40,margin: 15,borderBottomWidth: 1,paddingHorizontal: 10,
+                                        paddingVertical:10,borderColor: !error ? 'black':'red',color:'black'}}
+                                      placeholder="contraseña"
                                       onChangeText={ (value) => onChange( value, 'password' ) }
                                       value={password}
                                       autoCorrect={false}
@@ -65,15 +89,17 @@ return (
                                     </TextInput>
                                 </View>
                                 <View style={styles.positionBtnLogin}>
-                                    <TouchableOpacity style={styles.btnLogin}
-                                    onPress={()=> log()}
-                                    > 
-                                    <Text style={{color:'white',fontSize:20,fontStyle:'italic'}}>Inicio</Text>                               
-                                    </TouchableOpacity>
+                                    <Buttons onPress={log} text='Inicio'/>                               
                                 </View>
+                                <Text style={styles.textSlice}>Produced by</Text>
+                                <Image source={require('./../assests/SliceLogo.png')} 
+                                resizeMode='contain' resizeMethod='resize' 
+                                style={{width:'10%',height:'5%',zIndex:1000}}/>
+                                <Text style={[styles.textSlice,styles.margin0]}>Slice</Text>
                                 </>
                                }
                           </View>
+    </LinearGradient>
                           
   )
 }
@@ -86,21 +112,12 @@ const styles = StyleSheet.create({
     image: {
       flex: 1,
     },
-    input: {
-      width:300,
-      height: 40,
-      margin: 15,
-      borderBottomWidth: 1,
-      paddingHorizontal: 10,
-      paddingVertical:10,
-      borderColor:'black',
-      color:'black'
-    },
     inputsPosition:{
     },
     logo: {
-      width: '100%',
-      marginTop:40
+      width: '30%',
+      height:'20%',
+      marginTop:120
     },
     btnLogin:{
       width: 250,
@@ -109,6 +126,14 @@ const styles = StyleSheet.create({
       backgroundColor:'#FF914D',
       justifyContent:'center',
       alignItems:'center',
+      shadowColor: "#000",
+      shadowOffset: {
+          width: 0,
+          height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+      elevation: 5,
     },
     positionBtnLogin:{
       marginTop:10
@@ -118,7 +143,11 @@ const styles = StyleSheet.create({
       alignSelf:'center',
       fontSize:33,
       color:'#B7E4F9FF'
-    }
+    },
+    textSlice:{
+      color:'black',fontSize:8,marginTop:'55%'
+    },
+    margin0:{marginTop:0},
   
   })
 export default Login
